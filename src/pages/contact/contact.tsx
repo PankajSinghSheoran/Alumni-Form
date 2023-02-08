@@ -1,10 +1,12 @@
 import { Button, DatePicker, Form, Input, Select } from "antd";
 import Upload from "antd/es/upload/Upload";
 
+const { RangePicker } = DatePicker;
+
 export default function Contact() {
   return (
     <>
-      <Form>
+      <Form className="flex flex-col h-screen justify-center items-center bg-blue-300">
         <Form.Item
           name="FirstName"
           label="First Name"
@@ -108,7 +110,7 @@ export default function Contact() {
         >
           <Input
             placeholder="Enter your Email"
-            className="focus.outline-black"
+            className="focus:border-black focus:hover:border-pink"
           />
         </Form.Item>
 
@@ -143,33 +145,15 @@ export default function Contact() {
         </Form.Item>
 
         <Form.Item
-          name="YearOfAdmission"
-          label="Year of Admission"
+          name="Year of Admission and Passout"
+          label="Year of Admission and Passout"
           rules={[
             {
               required: true,
             },
           ]}
         >
-          <Input
-            placeholder="Enter your Year of Admission"
-            className="focus.outline-black"
-          />
-        </Form.Item>
-
-        <Form.Item
-          name="YearOfPassout"
-          label="Year of Pass out"
-          rules={[
-            {
-              required: true,
-            },
-          ]}
-        >
-          <Input
-            placeholder="Enter your Year of Pass out"
-            className="focus.outline-black"
-          />
+          <RangePicker />
         </Form.Item>
 
         <Form.Item label="Upload" valuePropName="fileList">
@@ -190,7 +174,11 @@ export default function Contact() {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button
+            type="primary"
+            htmlType="submit"
+            className="bg-color skye-blue"
+          >
             Register
           </Button>
         </Form.Item>
