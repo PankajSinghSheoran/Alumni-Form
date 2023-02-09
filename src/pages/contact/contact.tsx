@@ -159,7 +159,6 @@ export default function Contact() {
         <Form.Item label="Upload" valuePropName="fileList">
           <Upload action="/upload.do" listType="picture-card">
             <div>
-              {/* <PlusOutlined /> */}
               <div style={{ marginTop: 8 }}>Upload</div>
             </div>
           </Upload>
@@ -174,11 +173,7 @@ export default function Contact() {
         </Form.Item>
 
         <Form.Item>
-          <Button
-            type="primary"
-            htmlType="submit"
-            className="bg-color skye-blue"
-          >
+          <Button type="primary" htmlType="submit" className="bg-blue-600 ">
             Register
           </Button>
         </Form.Item>
