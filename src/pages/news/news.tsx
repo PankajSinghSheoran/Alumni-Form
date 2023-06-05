@@ -1,87 +1,71 @@
 import React from "react";
-import {
-  LaptopOutlined,
-  NotificationOutlined,
-  UserOutlined,
-} from "@ant-design/icons";
-import type { MenuProps } from "antd";
-import { Breadcrumb, Layout, Menu, theme } from "antd";
+import { Layout, Typography, Row, Col, Card, List } from "antd";
 
-const { Header, Content, Sider } = Layout;
+const { Content } = Layout;
+const { Title } = Typography;
 
-const items1: MenuProps["items"] = ["1", "2", "3"].map((key) => ({
-  key,
-  label: `nav ${key}`,
-}));
+const newsData = [
+  {
+    title: "Event Announcement",
+    type: "event",
+    description: "Join us for our annual alumni reunion on June 15th!",
+  },
+  {
+    title: "Job Opportunity",
+    type: "job",
+    description: "We are hiring for various positions. Apply now!",
+  },
+  {
+    title: "Alumni Spotlight",
+    type: "spotlight",
+    description: "Read about the achievements of our outstanding alumni.",
+  },
+];
 
-const items2: MenuProps["items"] = [
-  UserOutlined,
-  LaptopOutlined,
-  NotificationOutlined,
-].map((icon, index) => {
-  const key = String(index + 1);
+interface CardColors {
+  [key: string]: string;
+}
 
-  return {
-    key: `sub${key}`,
-    icon: React.createElement(icon),
-    label: `subnav ${key}`,
-
-    children: new Array(4).fill(null).map((_, j) => {
-      const subKey = index * 4 + j + 1;
-      return {
-        key: subKey,
-        label: `option${subKey}`,
-      };
-    }),
-  };
-});
-
-const App: React.FC = () => {
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
-
-  return (
-    <Layout>
-      <Header className="header">
-        <div className="logo" />
-        <Menu
-          theme="dark"
-          mode="horizontal"
-          defaultSelectedKeys={["2"]}
-          items={items1}
-        />
-      </Header>
-      <Layout>
-        <Sider width={200} style={{ background: colorBgContainer }}>
-          <Menu
-            mode="inline"
-            defaultSelectedKeys={["1"]}
-            defaultOpenKeys={["sub1"]}
-            style={{ height: "100%", borderRight: 0 }}
-            items={items2}
-          />
-        </Sider>
-        <Layout style={{ padding: "0 24px 24px" }}>
-          <Breadcrumb style={{ margin: "16px 0" }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-          </Breadcrumb>
-          <Content
-            style={{
-              padding: 24,
-              margin: 0,
-              minHeight: 280,
-              background: colorBgContainer,
-            }}
-          >
-            Content
-          </Content>
-        </Layout>
-      </Layout>
-    </Layout>
-  );
+const cardColors: CardColors = {
+  event: "#ff9999",
+  job: "#99ccff",
+  spotlight: "#99ff99",
 };
 
-export default App;
+export default function News() {
+  return (
+    <Layout>
+      <Content style={{ padding: "50px" }}>
+        <Title level={2}>News</Title>
+        <Row gutter={[16, 16]}>
+          {newsData.map((news) => (
+            <Col key={news.title} xs={24} sm={12} md={8}>
+              <Card
+                style={{ backgroundColor: cardColors[news.type] }}
+                hoverable
+              >
+                <p>{news.description}</p>
+              </Card>
+            </Col>
+          ))}
+        </Row>
+        <Title level={3}>Latest Articles</Title>
+        <List
+          itemLayout="vertical"
+          size="large"
+          dataSource={newsData}
+          renderItem={(news) => (
+            <List.Item
+              style={{ borderLeft: `4px solid ${cardColors[news.type]}` }}
+            >
+              <List.Item.Meta
+                title={news.title}
+                description={news.description}
+              />
+            </List.Item>
+          )}
+        />
+      </Content>
+    </Layout>
+  );
+}

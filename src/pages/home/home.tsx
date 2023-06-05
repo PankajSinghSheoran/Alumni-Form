@@ -1,36 +1,37 @@
 import React, { useState } from "react";
-import { Layout, Menu, MenuProps, theme } from "antd";
+import { Layout, Menu, theme } from "antd";
 import {
   AppstoreOutlined,
   MailOutlined,
   SettingOutlined,
 } from "@ant-design/icons";
+import { Link } from "react-router-dom";
 
 const { Content, Footer } = Layout;
 
-const items: MenuProps["items"] = [
+const items = [
   {
-    label: <a href="/">Home</a>,
+    label: <Link to="/">Home</Link>,
     key: "mail",
     icon: <MailOutlined />,
   },
   {
-    label: <a href="./alumni">Alumni</a>,
+    label: <Link to="##">Alumni</Link>,
     key: "app",
     icon: <AppstoreOutlined />,
     children: [
       {
-        label: <a href="./alumni">Register Now</a>,
+        label: <Link to="./alumni">Register Now</Link>,
         key: "1",
       },
       {
-        label: <a href="./alumni">Login</a>,
+        label: <Link to="./alumni">Login</Link>,
         key: "2",
       },
     ],
   },
   {
-    label: <a href="./news">News</a>,
+    label: <Link to="./news">News</Link>,
     key: "SubMenu",
     icon: <SettingOutlined />,
   },
@@ -38,7 +39,7 @@ const items: MenuProps["items"] = [
     label: (
       <a
         href="https://www.crmjatcollege.com/"
-        target={"_blank"}
+        target="_blank"
         rel="noopener noreferrer"
       >
         Official website
@@ -48,42 +49,75 @@ const items: MenuProps["items"] = [
   },
 ];
 
-export default function Home() {
+interface LayoutWrapperProps {
+  children: React.ReactNode;
+}
+
+const LayoutWrapper: React.FC<LayoutWrapperProps> = ({ children }) => {
   const {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const [current, setCurrent] = useState("mail");
+  return (
+    <Layout className="layout">
+      <Content style={{ padding: "0 50px" }}>{children}</Content>
+    </Layout>
+  );
+};
 
-  const onClick: MenuProps["onClick"] = (e) => {
+const Home: React.FC = () => {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
+  const [current, setCurrent] = useState<string>("mail");
+
+  const onClick = (e: { key: string }) => {
     console.log("click ", e);
     setCurrent(e.key);
   };
+
   return (
     <Layout className="flex">
-      <Content className="site-layout" style={{ padding: "0 50px" }}>
-        <Menu
-          onClick={onClick}
-          selectedKeys={[current]}
-          mode="horizontal"
-          items={items}
-        />
-        <div
-          style={{ padding: 24, minHeight: 380, background: colorBgContainer }}
+      <LayoutWrapper>
+        <Content
+          className="site-layout"
+          style={{ padding: "0 50px", textAlign: "center" }}
         >
-          <img
-            src="https://crmjatcollege.com/templates/crmjat/slider/slider4.jpg"
-            alt="Photos"
+          <Menu
+            onClick={onClick}
+            selectedKeys={[current]}
+            mode="horizontal"
+            items={items}
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              fontSize: "20px",
+            }}
           />
-          <img
-            src="https://crmjatcollege.com/templates/crmjat/slider/slider1.jpg"
-            alt="Photos"
-          />
-        </div>
-      </Content>
-      <Footer style={{ textAlign: "center" }}>
-        Alumni Managment Portal ©2023 Created by Pankaj Singh Sheoran
-      </Footer>
+          <div
+            style={{
+              padding: 24,
+              minHeight: 380,
+              background: colorBgContainer,
+            }}
+          >
+            <img
+              src="https://crmjatcollege.com/templates/crmjat/slider/slider4.jpg"
+              alt="Photos"
+            />
+            <img
+              src="https://crmjatcollege.com/templates/crmjat/slider/slider1.jpg"
+              alt="Photos"
+            />
+          </div>
+        </Content>
+        <Footer style={{ textAlign: "center" }}>
+          Alumni Management Portal ©2023 Created by Pankaj Singh Sheoran
+        </Footer>
+      </LayoutWrapper>
     </Layout>
   );
-}
+};
+
+export default Home;
